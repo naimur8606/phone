@@ -17,14 +17,16 @@ const checkValue = (searchText) =>{
 
 const phoneLode = (searchText = "iphone", number) =>{
     fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`)
-      .then(res => res.json())
-      .then(data => {displayPhone(data.data, number);if(data.data.length === 0){checkValue(data.data)}})
-      
+    .then(res => res.json())
+    .then(data => {displayPhone(data.data, number);
+      if(data.data.length === 0){
+        checkValue(data.data)
+      }
+    })     
 }
-let nextPreviousNumber = 0
+let nextPreviousNumber = 0;
 const displayPhone = (phones, number=0) => {
   nextPreviousNumber += number;
-  console.log(nextPreviousNumber,phones.length)
   if(nextPreviousNumber >= 8){
     document.getElementById("previous-btn").classList.remove("hidden");
   }
@@ -33,15 +35,11 @@ const displayPhone = (phones, number=0) => {
   }
   if(nextPreviousNumber >= phones.length){
     document.getElementById("next-btn").classList.add("hidden");
-  }
-  else{
-    document.getElementById("next-btn").classList.remove("hidden");
-  }
-  if(nextPreviousNumber > phones.length){
     document.getElementById("nextPrevious").classList.remove("hidden");
     document.getElementById("load").classList.add("hidden");
   }
   else{
+    document.getElementById("next-btn").classList.remove("hidden");
     document.getElementById("nextPrevious").classList.add("hidden");
   }
   phones = phones.slice(0 + nextPreviousNumber, 8 + nextPreviousNumber);
@@ -70,28 +68,25 @@ const nextPrevious = (number) =>{
 
 const showDetails = (id) => {
   fetch(`https://openapi.programming-hero.com/api/phone/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        // document.getElementById("phone-title").innerText=data.data.name;
-         console.log(data.data);
-        // 
-        const detailsPhoneContainer = document.getElementById('details-container');
-    detailsPhoneContainer.innerHTML =`
-      <div class="bg-[#f3f8ff] py-5">
-        <img class="mx-auto" src="${data.data.image}" alt="Shoes" />
-      </div>
-      <div class=" pt-3">
-        <h3 class="font-bold text-2xl">Name: ${data.data.name}</h3>
-        <p class="text-[#706F6F] font-semibold py-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
-        <h3 class="font-bold text-[18px] my-2">Brand:<span class="text-[#939090] font-semibold"> ${data.data?.brand}</span></h3>
-        <h3 class="font-bold text-[18px] my-2">Storage:<span class="text-[#939090] font-semibold"> ${data.data?.mainFeatures?.storage}</span></h3>
-        <h3 class="font-bold text-[18px] my-2">Display:<span class="text-[#939090] font-semibold"> ${data.data?.mainFeatures?.displaySize}</span></h3>
-        <h3 class="font-bold text-[18px] my-2">Memory:<span class="text-[#939090] font-semibold"> ${data.data?.mainFeatures?.memory}</span></h3>
-        <h3 class="font-bold text-[18px] my-2">Slug:<span class="text-[#939090] font-semibold"> ${data.data?.slug}</span></h3>
-        <h3 class="font-bold text-[18px] my-2">GPS:<span class="text-[#939090] font-semibold"> ${data.data?.others?.GPS}</span></h3>
-      </div>
-    `
+    .then(res => res.json())
+    .then(data => {
+      const detailsPhoneContainer = document.getElementById('details-container');
+      detailsPhoneContainer.innerHTML =`
+        <div class="bg-[#f3f8ff] py-5">
+          <img class="mx-auto" src="${data.data.image}" alt="Shoes" />
+        </div>
+        <div class=" pt-3">
+          <h3 class="font-bold text-2xl">Name: ${data.data.name}</h3>
+          <p class="text-[#706F6F] font-semibold py-3">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+          <h3 class="font-bold text-[18px] my-2">Brand:<span class="text-[#939090] font-semibold"> ${data.data?.brand}</span></h3>
+          <h3 class="font-bold text-[18px] my-2">Storage:<span class="text-[#939090] font-semibold"> ${data.data?.mainFeatures?.storage}</span></h3>
+          <h3 class="font-bold text-[18px] my-2">Display:<span class="text-[#939090] font-semibold"> ${data.data?.mainFeatures?.displaySize}</span></h3>
+          <h3 class="font-bold text-[18px] my-2">Memory:<span class="text-[#939090] font-semibold"> ${data.data?.mainFeatures?.memory}</span></h3>
+          <h3 class="font-bold text-[18px] my-2">Slug:<span class="text-[#939090] font-semibold"> ${data.data?.slug}</span></h3>
+          <h3 class="font-bold text-[18px] my-2">GPS:<span class="text-[#939090] font-semibold"> ${data.data?.others?.GPS}</span></h3>
+        </div>
+      `
         
-      })
+    })
 }
 phoneLode()
