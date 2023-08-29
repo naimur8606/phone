@@ -1,19 +1,25 @@
 function search(number){
   const searchText = document.getElementById("search-text").value;
-  if(searchText == ""){
+  checkValue(searchText);
+  phoneLode(searchText, number)
+}
+
+const checkValue = (searchText) =>{
+  if(searchText.length === 0){
     document.getElementById("error").classList.remove("hidden");
+    document.getElementById("load").classList.add("hidden");
   }
   else{
     document.getElementById("error").classList.add("hidden");
     document.getElementById("load").classList.remove("hidden");
   }
-  phoneLode(searchText, number)
 }
 
 const phoneLode = (searchText = "iphone", number) =>{
     fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`)
       .then(res => res.json())
-      .then(data => displayPhone(data.data, number))
+      .then(data => {displayPhone(data.data, number);if(data.data.length === 0){checkValue(data.data)}})
+      
 }
 let nextPreviousNumber = 0
 const displayPhone = (phones, number=0) => {
